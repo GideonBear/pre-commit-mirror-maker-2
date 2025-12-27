@@ -1,16 +1,18 @@
-[![build status](https://github.com/pre-commit/pre-commit-mirror-maker/actions/workflows/main.yml/badge.svg)](https://github.com/pre-commit/pre-commit-mirror-maker/actions/workflows/main.yml)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/pre-commit/pre-commit-mirror-maker/main.svg)](https://results.pre-commit.ci/latest/github/pre-commit/pre-commit-mirror-maker/main)
+[![build status](https://github.com/GideonBear/pre-commit-mirror-maker-2/actions/workflows/main.yml/badge.svg)](https://github.com/GideonBear/pre-commit-mirror-maker-2/actions/workflows/main.yml)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/GideonBear/pre-commit-mirror-maker-2/main.svg)](https://results.pre-commit.ci/latest/github/GideonBear/pre-commit-mirror-maker-2/main)
 
-pre-commit-mirror-maker
+pre-commit-mirror-maker-2
 =======================
 
 Scripts for creating mirror repositories that do not have
 .pre-commit-hooks.yaml
 
+This is a fork of [pre-commit-mirror-maker](https://github.com/pre-commit/pre-commit-mirror-maker) to add a few features.
+
 
 ### Installation
 
-`$ pip install pre-commit-mirror-maker`
+`$ pip install pre-commit-mirror-maker-2`
 
 
 ### Sample Usage
