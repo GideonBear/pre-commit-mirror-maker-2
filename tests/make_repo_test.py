@@ -69,6 +69,61 @@ def test_commit_version(in_git_dir):
     assert _cmd('git', 'status', '-s') == ''
     assert _cmd('git', 'tag', '-l') == 'v0.24.1'
     assert _cmd('git', 'log', '--oneline').split()[1:] == ['Mirror:', '0.24.1']
+    assert _cmd('git', 'rev-parse', 'HEAD') \
+        == _cmd('git', 'rev-parse', 'v0.24.1')
+
+
+def test_commit_version_tag_exists(in_git_dir):
+    _cmd(
+        'git',
+        'commit',
+        '--allow-empty',
+        '--message="initial testing commit"',
+    )
+    _cmd('git', 'tag', 'v0.24.1')
+    with pytest.raises(subprocess.CalledProcessError):
+        _commit_version(
+            '.',
+            version='0.24.1', language='ruby', name='scss-lint',
+            description='', entry='scss-lint', id='scss-lint',
+            match_key='files', match_val=r'\.scss$', args='[]',
+            additional_dependencies='[]', require_serial='false',
+            pass_filenames='true', minimum_pre_commit_version='0',
+            skip_existing=False,
+        )
+
+
+def test_commit_version_tag_exists_skip_exists(in_git_dir):
+    _cmd(
+        'git',
+        'commit',
+        '--allow-empty',
+        '--message="initial testing commit"',
+    )
+    _cmd('git', 'tag', 'v0.24.1')
+    _commit_version(  # Should not raise since we set skip_existing=True
+        '.',
+        version='0.24.1', language='ruby', name='scss-lint', description='',
+        entry='scss-lint', id='scss-lint', match_key='files',
+        match_val=r'\.scss$', args='[]', additional_dependencies='[]',
+        require_serial='false', pass_filenames='true',
+        minimum_pre_commit_version='0', skip_existing=True,
+    )
+
+    # Assert that our things got copied over
+    assert in_git_dir.join('.pre-commit-hooks.yaml').exists()
+    assert in_git_dir.join('pre_commit_fake_gem.gemspec').exists()
+    # Assert that we set the version file correctly
+    assert in_git_dir.join('.version').read().strip() == '0.24.1'
+
+    # Assert some things about the gits
+    assert _cmd('git', 'status', '-s') == ''
+    assert _cmd('git', 'tag', '-l') == 'v0.24.1'
+    assert _cmd('git', 'log', '--oneline').split()[1:3] \
+        == ['Mirror:', '0.24.1']
+    # It should be *not* the same, as it's still on the pre-existing commit
+    assert _cmd('git', 'rev-parse', 'HEAD') \
+        != _cmd('git', 'rev-parse', 'v0.24.1')
 
 
 def test_arguments(in_git_dir):
