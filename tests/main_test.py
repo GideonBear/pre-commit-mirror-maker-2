@@ -126,6 +126,19 @@ def test_main_types_or_multi(mock_make_repo):
     assert mock_make_repo.call_args[1]['minimum_pre_commit_version'] == '2.9.2'
 
 
+def test_main_always_run(mock_make_repo):
+    assert not main.main((
+        '.',
+        '--language', 'python',
+        '--package-name', 'yapf',
+        '--always-run',
+    ))
+    print(mock_make_repo.call_args[1])
+    assert mock_make_repo.call_args[1]['match_key'] == 'always_run'
+    assert mock_make_repo.call_args[1]['match_val'] == 'true'
+    assert mock_make_repo.call_args[1]['minimum_pre_commit_version'] == '0'
+
+
 def test_main_errors_when_hook_id_has_spaces(mock_make_repo):
     with pytest.raises(SystemExit) as excinfo:
         main.main((
