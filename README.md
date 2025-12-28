@@ -11,6 +11,7 @@ This is a fork of [pre-commit-mirror-maker](https://github.com/pre-commit/pre-co
 features, including:
 
 * Adding support for `always_run: true` and `pass_filenames: false`
+* Add `--skip-existing` which skips existing tags
 
 ### Installation
 

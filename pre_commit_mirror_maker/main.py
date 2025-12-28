@@ -34,6 +34,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         help='Local path where the git repo is checked out.',
     )
     parser.add_argument(
+        '--skip-existing', action='store_true',
+        help='Skip tagging versions for which a tag already exists. '
+        'Useful for converting existing mirrors to use this tool.',
+    )
+    parser.add_argument(
         '--language', required=True, choices=LIST_VERSIONS,
         help='Which language to use.',
     )
@@ -109,6 +114,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     make_repo(
         args.repo_path,
         name=args.package_name,
+        skip_existing=args.skip_existing,
         description=args.description,
         language=args.language,
         entry=args.entry or args.package_name,

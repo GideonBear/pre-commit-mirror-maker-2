@@ -43,6 +43,7 @@ def _commit_version(
         repo: str, *,
         language: str,
         version: str,
+        skip_existing: bool,
         **fmt_vars: str,
 ) -> None:
     # 'all' writes the .version and .pre-commit-hooks.yaml files
@@ -68,10 +69,26 @@ def _commit_version(
     # Commit and tag
     git('add', '.')
     git('commit', '-m', f'Mirror: {version}')
-    git('tag', f'v{version}')
+    try:
+        git('tag', f'v{version}')
+    except subprocess.CalledProcessError as err:
+        if err.returncode == 128 and skip_existing:
+            print(
+                f'Tag v{version} already exists, '
+                'skipping tagging step due to --skip-existing',
+            )
+        else:
+            raise
 
 
-def make_repo(repo: str, *, language: str, name: str, **fmt_vars: str) -> None:
+def make_repo(
+        repo: str,
+        *,
+        language: str,
+        name: str,
+        skip_existing: bool,
+        **fmt_vars: str,
+) -> None:
     assert os.path.exists(os.path.join(repo, '.git')), repo
 
     package_versions = LIST_VERSIONS[language](name)
@@ -97,6 +114,7 @@ def make_repo(repo: str, *, language: str, name: str, **fmt_vars: str) -> None:
             name=name,
             language=language,
             version=version,
+            skip_existing=skip_existing,
             additional_dependencies=json.dumps(additional_dependencies),
             **fmt_vars,
         )
