@@ -7,8 +7,10 @@ pre-commit-mirror-maker-2
 Scripts for creating mirror repositories that do not have
 .pre-commit-hooks.yaml
 
-This is a fork of [pre-commit-mirror-maker](https://github.com/pre-commit/pre-commit-mirror-maker) to add a few features.
+This is a fork of [pre-commit-mirror-maker](https://github.com/pre-commit/pre-commit-mirror-maker) to add a few
+features, including:
 
+* Adding support for `always_run: true` and `pass_filenames: false`
 
 ### Installation
 

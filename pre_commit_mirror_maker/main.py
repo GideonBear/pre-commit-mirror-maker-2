@@ -53,6 +53,10 @@ def main(argv: Sequence[str] | None = None) -> int:
     mutex.add_argument(
         '--types-or', action='append', help='`identify` type to OR match',
     )
+    mutex.add_argument(
+        '--always-run', action='store_true',
+        help='Set `always_run: true` for the hook',
+    )
 
     parser.add_argument(
         '--id', help='Hook id, defaults to the entry point.',
@@ -73,6 +77,10 @@ def main(argv: Sequence[str] | None = None) -> int:
         '--require-serial', action='store_true',
         help='Set `require_serial: true` for the hook',
     )
+    parser.add_argument(
+        '--pass-filenames-false', action='store_true',
+        help='Set `pass_filesnames: false` for the hook',
+    )
     args = parser.parse_args(argv)
 
     minimum_pre_commit_version = '0'
@@ -84,6 +92,9 @@ def main(argv: Sequence[str] | None = None) -> int:
     elif args.types:
         match_key = 'types'
         match_val = f'[{args.types}]'
+    elif args.always_run:
+        match_key = 'always_run'
+        match_val = json.dumps(args.always_run)
     else:
         match_key = 'files'
         match_val = args.files_regex
@@ -106,6 +117,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         match_val=match_val,
         args=json.dumps(split_by_commas(args.args)),
         require_serial=json.dumps(args.require_serial),
+        pass_filenames=json.dumps(not args.pass_filenames_false),
         minimum_pre_commit_version=minimum_pre_commit_version,
     )
     return 0
