@@ -308,7 +308,7 @@ def test_golang_integration(in_git_dir):
         language='golang', name='mvdan.cc/gofumpt', description='',
         entry='gofumpt', id='gofumpt', match_key='types', match_val='go',
         args='-w', require_serial='false', minimum_pre_commit_version='0',
-        skip_existing=False,
+        pass_filenames='true', skip_existing=False,
     )
     # Our files should exist
     assert in_git_dir.join('.version').exists()
