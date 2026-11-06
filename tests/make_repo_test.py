@@ -162,7 +162,8 @@ def test_arguments_name_with_special_chars(in_git_dir):
         match_key='files',
         match_val=r'^(\.github|config)/dependabot\.ya?ml$', args='[]',
         additional_dependencies='[]', require_serial='false',
-        minimum_pre_commit_version='0', skip_existing=False,
+        pass_filenames='true', minimum_pre_commit_version='0',
+        skip_existing=False,
     )
     contents = in_git_dir.join('.pre-commit-hooks.yaml').read()
     assert yaml.safe_load(contents) == [{
@@ -174,6 +175,7 @@ def test_arguments_name_with_special_chars(in_git_dir):
         'files': r'^(\.github|config)/dependabot\.ya?ml$',
         'args': [],
         'require_serial': False,
+        'pass_filenames': True,
         'additional_dependencies': [],
         'minimum_pre_commit_version': '0',
     }]
@@ -356,8 +358,8 @@ def test_haskell_integration(in_git_dir):
         '.',
         language='haskell', name='hlint', description='',
         entry='hlint', id='hlint', match_key='types', match_val='haskell',
-        args='[]', require_serial='false', minimum_pre_commit_version='0',
-        skip_existing=False,
+        args='[]', require_serial='false', pass_filenames='true',
+        minimum_pre_commit_version='0', skip_existing=False,
     )
     assert in_git_dir.join('.version').exists()
     assert in_git_dir.join('.pre-commit-hooks.yaml').exists()

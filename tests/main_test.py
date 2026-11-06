@@ -60,7 +60,8 @@ def test_main_passes_haskell_args(mock_make_repo):
         language='haskell', name='hlint', description='',
         entry='hlint',
         id='hlint', match_key='types', match_val='[haskell]', args='[]',
-        require_serial='false', minimum_pre_commit_version='0',
+        require_serial='false', pass_filenames='true',
+        minimum_pre_commit_version='0', skip_existing=False,
     )
 
 
